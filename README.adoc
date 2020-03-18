@@ -1,0 +1,3 @@
+= Toth
+
+Application for teachers used to manage courses and student results.
