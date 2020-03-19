@@ -1,0 +1,74 @@
+@startuml
+hide empty methods
+
+class Person {
+    id: UUID
+    name: string
+    surname: string
+}
+
+class User {
+    mail: Mail
+    passwordHash: []byte
+    hashAlgorithm: string
+    checkPassword(password: string): bool
+}
+
+class Teacher {
+    interrogation: []Interrogation
+    courses(): []Course
+}
+
+class Student {
+    results: []Result
+    interrogations(): []Interrogation
+    courses(): []Course
+    average(course: Course): int
+}
+
+class Course {
+    id: UUID
+    name: string
+    parent: Course
+    average(): int
+    interrogations(): []Interrogation
+}
+
+class Interrogation {
+    id: UUID
+    name: String
+    date: Date
+    courses(): []Course
+    total(): int
+    average(): int
+    averagePerCourse(course: Course): int
+}
+
+class InterrogationDataPerCourse {
+    id: UUID
+    course: Course
+    interrogation: Interrogation
+    total: int
+    average(): int
+}
+
+class Result {
+    student: Student
+    interrogation: InterrogationDataPerCourse
+    course: Course
+    status: Status
+    result: int
+}
+
+Student *-- Result
+Interrogation *-- InterrogationDataPerCourse
+Course *-- Course
+Course *-- InterrogationDataPerCourse
+InterrogationDataPerCourse *-- Result
+
+Person <|-- User
+Person <|-- Student
+User <|-- Teacher
+Teacher o-- Interrogation
+
+@enduml
