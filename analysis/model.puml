@@ -17,6 +17,7 @@ class User {
 class Teacher {
     interrogation: []Interrogation
     courses(): []Course
+    test: string
 }
 
 class Student {
