@@ -22,7 +22,11 @@ function getConfiguration(env) {
           loader: "vue-loader"
         },
         {
-          test: /\.(png|svg|jpg|gif)$/,
+          test: /\.svg$/,
+          loader: "vue-svg-loader" // `vue-svg` for webpack 1.x
+        },
+        {
+          test: /\.(png|jpg|gif)$/,
           use: [
             {
               loader: "url-loader",

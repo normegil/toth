@@ -6,8 +6,6 @@ import { ROUTER } from "./routes";
 import { STORE } from "./store";
 import { TRANSLATOR_OPTIONS } from "./assets/translations";
 import "./assets/scss/index.scss";
-import "typeface-ubuntu-mono";
-import "typeface-rokkitt";
 import "line-awesome/dist/line-awesome/css/line-awesome.min.css";
 
 Vue.use(VueI18n);

@@ -13,7 +13,11 @@ html {
 
 body {
   box-sizing: border-box;
-  font-family: "Ubuntu Mono", sans-serif;
+  font-family: sans-serif;
   font-weight: 400;
 }
 
+@font-face {
+  font-family: "Anke Calligraphic FG";
+  src: url("../fonts/anke-webfont.woff") format("woff"), url("../fonts/anke-webfont.woff2") format("woff2");
+}
