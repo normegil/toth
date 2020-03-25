@@ -1,102 +1,100 @@
 /* eslint-disable */
-const path = require('path')
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const path = require("path");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
-function getConfiguration (env) {
+function getConfiguration(env) {
   let cfg = {
-    entry: './src/index.ts',
-    mode: 'development',
+    entry: "./src/index.ts",
+    mode: "development",
     optimization: {
-      usedExports: true,
+      usedExports: true
     },
     output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'dist'),
+      filename: "bundle.js",
+      path: path.resolve(__dirname, "dist")
     },
     module: {
       rules: [
         {
           test: /\.vue$/,
-          loader: 'vue-loader'
+          loader: "vue-loader"
         },
         {
           test: /\.(png|svg|jpg|gif)$/,
           use: [
             {
-              loader: 'url-loader',
+              loader: "url-loader",
               options: {
-                limit: 8192,
-              },
-            },
-          ],
+                limit: 8192
+              }
+            }
+          ]
         },
         {
           test: /\.tsx?$/,
-          loader: 'ts-loader',
+          loader: "ts-loader",
           exclude: /node_modules/,
           options: {
-            appendTsSuffixTo: [
-              /\.vue$/
-            ]
+            appendTsSuffixTo: [/\.vue$/]
           }
         },
         {
           test: /\.s?css$/,
           use: [
-            'vue-style-loader',
-            'css-loader',
+            "vue-style-loader",
+            "css-loader",
             {
-              loader: 'sass-loader',
+              loader: "sass-loader",
               options: {
-                prependData: '@import "src/assets/scss/all";',
-              },
-            },
+                prependData: '@import "src/assets/scss/all";'
+              }
+            }
           ]
         },
         {
           test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
           use: [
             {
-              loader: 'file-loader',
+              loader: "file-loader",
               options: {
-                name: '[name].[ext]',
-                outputPath: 'fonts/'
+                name: "[name].[ext]",
+                outputPath: "fonts/"
               }
             }
           ]
         }
-      ],
+      ]
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js', '.vue'],
+      extensions: [".tsx", ".ts", ".js", ".vue"],
       alias: {
-        vue$: 'vue/dist/vue.runtime.esm.js',
-        '@': path.resolve('./src'),
-        '@scss': path.resolve('./src/assets/scss')
+        vue$: "vue/dist/vue.runtime.esm.js",
+        "@": path.resolve("./src"),
+        "@scss": path.resolve("./src/assets/scss")
       }
     },
     plugins: [
       new CleanWebpackPlugin(),
       new VueLoaderPlugin(),
       new HtmlWebpackPlugin({
-        title: 'Toth',
-        template: 'src/index.html'
-      }),
+        title: "Toth",
+        template: "src/index.html"
+      })
     ]
-  }
+  };
 
-  if (env === 'dev') {
-    cfg.mode = 'development'
+  if (env === "dev") {
+    cfg.mode = "development";
     cfg.optimization = {
-      usedExports: true,
-    }
-    return cfg
+      usedExports: true
+    };
+    return cfg;
   } else {
-    cfg.mode = 'production'
-    return cfg
+    cfg.mode = "production";
+    return cfg;
   }
 }
 
-module.exports = getConfiguration
+module.exports = getConfiguration;
