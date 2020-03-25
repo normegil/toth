@@ -1,1 +1,19 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 45"><defs><style>.cls-1{fill:#fff;}</style></defs><title>logo-notext</title><rect class="cls-1" x="11.5" y="8.5" width="29" height="29"/><path d="M409,307v28H381V307h28m1-1H380v30h30V306Z" transform="translate(-369 -298)"/><rect x="42.5" y="5.5" width="9" height="34"/><path d="M420,304v33h-8V304h8m1-1H411v35h10V303Z" transform="translate(-369 -298)"/><rect y="5" width="10" height="35"/><circle cx="47" cy="5" r="4.5"/><path d="M416,299a4,4,0,1,1-4,4,4,4,0,0,1,4-4m0-1a5,5,0,1,0,5,5,5,5,0,0,0-5-5Z" transform="translate(-369 -298)"/><circle cx="5" cy="5" r="4.5"/><path d="M374,299a4,4,0,1,1-4,4,4,4,0,0,1,4-4m0-1a5,5,0,1,0,5,5,5,5,0,0,0-5-5Z" transform="translate(-369 -298)"/><circle class="cls-1" cx="5" cy="40" r="4.5"/><path d="M374,334a4,4,0,1,1-4,4,4,4,0,0,1,4-4m0-1a5,5,0,1,0,5,5,5,5,0,0,0-5-5Z" transform="translate(-369 -298)"/><circle class="cls-1" cx="47" cy="40" r="4.5"/><path d="M416,334a4,4,0,1,1-4,4,4,4,0,0,1,4-4m0-1a5,5,0,1,0,5,5,5,5,0,0,0-5-5Z" transform="translate(-369 -298)"/></svg>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 45">
+    <defs>
+        <style>.cls-1{}</style>
+    </defs>
+    <title>logo-notext</title>
+    <rect class="cls-1" x="11.5" y="8.5" width="29" height="29"/>
+    <path d="M409,307v28H381V307h28m1-1H380v30h30V306Z" transform="translate(-369 -298)"/>
+    <rect x="42.5" y="5.5" width="9" height="34"/>
+    <path d="M420,304v33h-8V304h8m1-1H411v35h10V303Z" transform="translate(-369 -298)"/>
+    <rect y="5" width="10" height="35"/>
+    <circle cx="47" cy="5" r="4.5"/>
+    <path d="M416,299a4,4,0,1,1-4,4,4,4,0,0,1,4-4m0-1a5,5,0,1,0,5,5,5,5,0,0,0-5-5Z" transform="translate(-369 -298)"/>
+    <circle cx="5" cy="5" r="4.5"/>
+    <path d="M374,299a4,4,0,1,1-4,4,4,4,0,0,1,4-4m0-1a5,5,0,1,0,5,5,5,5,0,0,0-5-5Z" transform="translate(-369 -298)"/>
+    <circle class="cls-1" cx="5" cy="40" r="4.5"/>
+    <path d="M374,334a4,4,0,1,1-4,4,4,4,0,0,1,4-4m0-1a5,5,0,1,0,5,5,5,5,0,0,0-5-5Z" transform="translate(-369 -298)"/>
+    <circle style="cls-1" cx="47" cy="40" r="4.5"/>
+    <path d="M416,334a4,4,0,1,1-4,4,4,4,0,0,1,4-4m0-1a5,5,0,1,0,5,5,5,5,0,0,0-5-5Z" transform="translate(-369 -298)"/>
+</svg>
