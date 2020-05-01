@@ -1,0 +1,3 @@
+log:
+  color: true
+  user-error: true
