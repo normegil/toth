@@ -54,7 +54,7 @@ func (d UserDAO) toUser(queryID string, row *sql.Row) (*internal.User, error) {
 }
 
 func (d UserDAO) Insert(user internal.User) error {
-	if _, err := d.Querier.Exec(`INSERT INTO "user" (id, name, mail, hash, algorithmID) VALUES (gen_random_uuid(), $1, $2, $3, $4::bytea, $5);`, user.Name, user.Surname, string(user.Mail), user.PasswordHash, user.HashAlgorithmID); err != nil {
+	if _, err := d.Querier.Exec(`INSERT INTO "user" (id, name, mail, hash, algorithmID) VALUES (gen_random_uuid(), $1, $2, $3::bytea, $4);`, user.Name, string(user.Mail), user.PasswordHash, user.HashAlgorithmID); err != nil {
 		return fmt.Errorf("inserting %s %s (%s): %w", user.Name, user.Mail, err)
 	}
 	return nil
