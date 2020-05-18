@@ -8,6 +8,7 @@
     "build:prod": "webpack",
     "build:dev": "webpack --env dev --progress --profile --colors",
     "build:watch": "webpack --env dev --progress --profile --colors --watch",
+    "dev:listen": "webpack-dev-server --open",
     "lint": "eslint --max-warnings=0 --ext .js,.jsx,.vue,.ts,.tsx src"
   },
   "author": "Olivier Ory",
@@ -46,7 +47,8 @@
     "vue-svg-loader": "^0.16.0",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.11.0"
   },
   "eslintConfig": {
     "parser": "vue-eslint-parser",
