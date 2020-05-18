@@ -11,6 +11,9 @@ function getConfiguration(env) {
     optimization: {
       usedExports: true
     },
+    devServer: {
+      contentBase: './dist',
+    },
     output: {
       filename: "bundle.js",
       path: path.resolve(__dirname, "dist")
