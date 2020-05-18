@@ -3,18 +3,19 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/alexedwards/scs/v2"
 	"github.com/normegil/godatabaseversioner"
 	"github.com/normegil/postgres"
-	"github.com/normegil/toth/server/internal"
 	internalhttp "github.com/normegil/toth/server/internal/http"
+	"github.com/normegil/toth/server/internal/http/api"
 	httperror "github.com/normegil/toth/server/internal/http/error"
+	"github.com/normegil/toth/server/internal/http/router"
 	internalpostgres "github.com/normegil/toth/server/internal/postgres"
 	"github.com/normegil/toth/server/internal/postgres/versions"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"net"
-	"net/http"
 )
 
 func listen() (*cobra.Command, error) {
@@ -77,9 +78,14 @@ func listenRun(_ *cobra.Command, _ []string) {
 	errHandler := httperror.HTTPErrorHandler{
 		LogUserError: viper.GetBool("log.user-error"),
 	}
-	var handler http.Handler = internal.Hello{
-		ErrHandler: errHandler,
-	}
+
+	sessionManager := scs.New()
+	handler := router.New(router.Dependencies{
+		APIControllers: []router.Controller{
+			api.NewAuth(errHandler, sessionManager),
+			api.Users{ErrHandler: errHandler},
+		},
+	})
 
 	db, err := postgres.New(postgres.Configuration{
 		Address:  viper.GetString("postgres.address"),
@@ -100,8 +106,9 @@ func listenRun(_ *cobra.Command, _ []string) {
 	}
 
 	handler = internalhttp.NewAuthenticationMiddleware(handler, internalhttp.AuthenticationDependencies{
-		ErrHandler: errHandler,
-		UserDAO:    internalpostgres.UserDAO{Querier: db},
+		ErrHandler:     errHandler,
+		UserDAO:        internalpostgres.UserDAO{Querier: db},
+		SessionManager: sessionManager,
 	})
 
 	if err := internalhttp.Listen(addr, handler); nil != err {

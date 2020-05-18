@@ -31,7 +31,6 @@ func (v SchemaCreation) Upgrade() error {
 			"Table-Create": `CREATE TABLE toth_user (
 				id uuid primary key,
 				name varchar(300),
-				surname varchar(300),
 				mail varchar(300) unique
 				CONSTRAINT valid_mail CHECK (mail ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$'),
 				hash bytea,

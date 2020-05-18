@@ -19,25 +19,25 @@ type UserDAO interface {
 }
 
 type AuthenticationDependencies struct {
-	ErrHandler httperror.HTTPErrorHandler
-	UserDAO    UserDAO
+	ErrHandler     httperror.HTTPErrorHandler
+	UserDAO        UserDAO
+	SessionManager *scs.SessionManager
 }
 
 func NewAuthenticationMiddleware(handler http.Handler, dependencies AuthenticationDependencies) http.Handler {
-	sessionManager := scs.New()
-	handler = sessionHandler{
+	handler = SessionHandler{
 		Handler:              handler,
-		SessionManager:       sessionManager,
+		SessionManager:       dependencies.SessionManager,
 		ErrHandler:           dependencies.ErrHandler,
 		UserDAO:              dependencies.UserDAO,
-		RequestAuthenticator: newRequestAuthenticator(dependencies.UserDAO, sessionManager),
+		RequestAuthenticator: newRequestAuthenticator(dependencies.UserDAO, dependencies.SessionManager),
 	}
 	return anonymousUserSetter{Handler: handler}
 }
 
 func newRequestAuthenticator(userDAO security.UserDAO, sessionManager *scs.SessionManager) requestAuthenticator {
 	authenticator := security.Authenticator{DAO: userDAO}
-	updater := authenticatedUserSessionUpdater{
+	updater := AuthenticatedUserSessionUpdater{
 		SessionManager: sessionManager,
 	}
 	requestAuthenticator := requestAuthenticator{
@@ -98,7 +98,7 @@ func (a requestAuthenticator) Authenticate(r *http.Request) error {
 
 const keySessionUser = "user"
 
-type sessionHandler struct {
+type SessionHandler struct {
 	SessionManager       *scs.SessionManager
 	RequestAuthenticator requestAuthenticator
 	ErrHandler           httperror.HTTPErrorHandler
@@ -106,7 +106,7 @@ type sessionHandler struct {
 	Handler              http.Handler
 }
 
-func (s sessionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (s SessionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	var token string
 	cookie, err := r.Cookie(s.SessionManager.Cookie.Name)
 	if err == nil {
@@ -133,7 +133,7 @@ func (s sessionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	userID := s.SessionManager.Get(ctx, keySessionUser)
 	if nil != userID {
 		userIDStr := userID.(string)
-		if "" != userIDStr && internal.UserAnonymous().Name != userIDStr {
+		if "" != userIDStr && internal.UserAnonymous().ID.String() != userIDStr {
 			parsedID, err := uuid.Parse(userIDStr)
 			if err != nil {
 				s.ErrHandler.Handle(w, fmt.Errorf("cannot parse id %s: %w", userIDStr, err))
@@ -166,10 +166,10 @@ func (s sessionHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.Handler.ServeHTTP(w, sr)
 }
 
-func (s sessionHandler) handleAuthenticationAction(r *http.Request) error {
+func (s SessionHandler) handleAuthenticationAction(r *http.Request) error {
 	authenticationAction := r.Header.Get("X-Authentication-Action")
 	if authenticationAction != "" {
-		userSessionUpdater := authenticatedUserSessionUpdater{SessionManager: s.SessionManager}
+		userSessionUpdater := AuthenticatedUserSessionUpdater{SessionManager: s.SessionManager}
 		switch authenticationAction {
 		case "sign-out":
 			err := userSessionUpdater.SignOut(r)
@@ -183,7 +183,7 @@ func (s sessionHandler) handleAuthenticationAction(r *http.Request) error {
 	return nil
 }
 
-func (s sessionHandler) writeSession(w http.ResponseWriter, token string, expiry time.Time) {
+func (s SessionHandler) writeSession(w http.ResponseWriter, token string, expiry time.Time) {
 	cookie := &http.Cookie{
 		Name:     s.SessionManager.Cookie.Name,
 		Value:    token,
@@ -216,11 +216,11 @@ func addHeaderIfMissing(w http.ResponseWriter, key, value string) {
 	w.Header().Add(key, value)
 }
 
-type authenticatedUserSessionUpdater struct {
+type AuthenticatedUserSessionUpdater struct {
 	SessionManager *scs.SessionManager
 }
 
-func (a authenticatedUserSessionUpdater) RenewSessionOnAuthenticatedUser(r *http.Request, userID uuid.UUID) error {
+func (a AuthenticatedUserSessionUpdater) RenewSessionOnAuthenticatedUser(r *http.Request, userID uuid.UUID) error {
 	if err := a.SessionManager.RenewToken(r.Context()); nil != err {
 		return fmt.Errorf("could not renew session token: %w", err)
 	}
@@ -228,10 +228,10 @@ func (a authenticatedUserSessionUpdater) RenewSessionOnAuthenticatedUser(r *http
 	return nil
 }
 
-func (a authenticatedUserSessionUpdater) SignOut(r *http.Request) error {
+func (a AuthenticatedUserSessionUpdater) SignOut(r *http.Request) error {
 	if err := a.SessionManager.RenewToken(r.Context()); nil != err {
 		return fmt.Errorf("could not renew session token: %w", err)
 	}
-	a.SessionManager.Put(r.Context(), keySessionUser, internal.UserAnonymous().Name)
+	a.SessionManager.Put(r.Context(), keySessionUser, internal.UserAnonymous().ID.String())
 	return nil
 }
