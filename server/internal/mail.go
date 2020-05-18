@@ -20,3 +20,7 @@ func NewMail(mail string) (Mail, error) {
 func (m Mail) IsValid() bool {
 	return mailRegex.MatchString(string(m))
 }
+
+func (m Mail) String() string {
+	return string(m)
+}
