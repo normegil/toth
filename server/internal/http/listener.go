@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+var Static http.Handler = http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+})
+
 func Listen(addr net.TCPAddr, handler http.Handler) error {
 	stopHTTPServer := make(chan os.Signal, 1)
 	signal.Notify(stopHTTPServer, os.Interrupt)

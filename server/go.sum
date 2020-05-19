@@ -179,6 +179,7 @@ github.com/normegil/interval v0.0.0-20181220165130-6c2976dd2323 h1:DZ8xMvvMQ0aq7
 github.com/normegil/interval v0.0.0-20181220165130-6c2976dd2323/go.mod h1:DDx4OosYtP41pLSmm3WZS2+1rRNPhKPT/v05/6jFvZY=
 github.com/normegil/postgres v0.0.0-20200310214905-1795c39f26e2 h1:SIsmh/KBku6ctbox2rjYZoKGF8FtQnyOBME8U9ipM/8=
 github.com/normegil/postgres v0.0.0-20200310214905-1795c39f26e2/go.mod h1:gYiX88w4Rpz53mvBnSMF6H8kEGiROMEjcznS4BbN364=
+github.com/normegil/toth v0.0.0-20200314192027-c3f368924c0e h1:gc4ZVBAyOocJOVW3c5WzpHFKXIom0mpzWSGr4aqt+uk=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
 github.com/opencontainers/go-digest v1.0.0/go.mod h1:0JzlMkj0TRzQZfJkVvzbP0HBR3IKzErnv2BNG4W4MAM=

@@ -18,36 +18,30 @@ type UserDAO interface {
 	Load(id uuid.UUID) (*internal.User, error)
 }
 
-type AuthenticationDependencies struct {
+const KeyUser string = "authenticated-user"
+
+type AuthenticationMiddleware struct {
 	ErrHandler     httperror.HTTPErrorHandler
 	UserDAO        UserDAO
 	SessionManager *scs.SessionManager
 }
 
-func NewAuthenticationMiddleware(handler http.Handler, dependencies AuthenticationDependencies) http.Handler {
+func (a AuthenticationMiddleware) Wrap(handler http.Handler) http.Handler {
+	updater := AuthenticatedUserSessionUpdater{
+		SessionManager: a.SessionManager,
+	}
 	handler = SessionHandler{
-		Handler:              handler,
-		SessionManager:       dependencies.SessionManager,
-		ErrHandler:           dependencies.ErrHandler,
-		UserDAO:              dependencies.UserDAO,
-		RequestAuthenticator: newRequestAuthenticator(dependencies.UserDAO, dependencies.SessionManager),
+		Handler:        handler,
+		SessionManager: a.SessionManager,
+		ErrHandler:     a.ErrHandler,
+		UserDAO:        a.UserDAO,
+		RequestAuthenticator: requestAuthenticator{
+			UserValidator:   security.Authenticator{DAO: a.UserDAO},
+			OnAuthenticated: updater.RenewSessionOnAuthenticatedUser,
+		},
 	}
 	return anonymousUserSetter{Handler: handler}
 }
-
-func newRequestAuthenticator(userDAO security.UserDAO, sessionManager *scs.SessionManager) requestAuthenticator {
-	authenticator := security.Authenticator{DAO: userDAO}
-	updater := AuthenticatedUserSessionUpdater{
-		SessionManager: sessionManager,
-	}
-	requestAuthenticator := requestAuthenticator{
-		UserValidator:   authenticator,
-		OnAuthenticated: updater.RenewSessionOnAuthenticatedUser,
-	}
-	return requestAuthenticator
-}
-
-const KeyUser string = "authenticated-user"
 
 type anonymousUserSetter struct {
 	Handler http.Handler

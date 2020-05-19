@@ -1,3 +1,6 @@
 log:
   color: true
   user-error: true
+
+server:
+  port: 9000

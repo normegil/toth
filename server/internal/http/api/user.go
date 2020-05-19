@@ -29,10 +29,6 @@ type Users struct {
 	ErrHandler httperror.HTTPErrorHandler
 }
 
-func (a Users) Path() string {
-	return "/users"
-}
-
 func (a Users) Handler() http.Handler {
 	r := chi.NewRouter()
 	r.Get("/current", http.HandlerFunc(a.currentUser))

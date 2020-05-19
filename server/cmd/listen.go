@@ -4,12 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/alexedwards/scs/v2"
+	"github.com/go-chi/chi"
 	"github.com/normegil/godatabaseversioner"
 	"github.com/normegil/postgres"
 	internalhttp "github.com/normegil/toth/server/internal/http"
 	"github.com/normegil/toth/server/internal/http/api"
 	httperror "github.com/normegil/toth/server/internal/http/error"
-	"github.com/normegil/toth/server/internal/http/router"
 	internalpostgres "github.com/normegil/toth/server/internal/postgres"
 	"github.com/normegil/toth/server/internal/postgres/versions"
 	"github.com/rs/zerolog/log"
@@ -80,12 +80,6 @@ func listenRun(_ *cobra.Command, _ []string) {
 	}
 
 	sessionManager := scs.New()
-	handler := router.New(router.Dependencies{
-		APIControllers: []router.Controller{
-			api.NewAuth(errHandler, sessionManager),
-			api.Users{ErrHandler: errHandler},
-		},
-	})
 
 	db, err := postgres.New(postgres.Configuration{
 		Address:  viper.GetString("postgres.address"),
@@ -105,13 +99,21 @@ func listenRun(_ *cobra.Command, _ []string) {
 		log.Fatal().Err(err).Msg("synchronize database schema")
 	}
 
-	handler = internalhttp.NewAuthenticationMiddleware(handler, internalhttp.AuthenticationDependencies{
+	authenticationMiddleware := internalhttp.AuthenticationMiddleware{
 		ErrHandler:     errHandler,
 		UserDAO:        internalpostgres.UserDAO{Querier: db},
 		SessionManager: sessionManager,
+	}
+
+	r := chi.NewRouter()
+	r.Use(authenticationMiddleware.Wrap)
+	r.Mount("/", internalhttp.Static)
+	r.Route("/api", func(r chi.Router) {
+		r.Mount("/auth", api.NewAuth(errHandler, sessionManager).Handler())
+		r.Mount("/users", api.Users{ErrHandler: errHandler}.Handler())
 	})
 
-	if err := internalhttp.Listen(addr, handler); nil != err {
+	if err := internalhttp.Listen(addr, r); nil != err {
 		log.Fatal().Msg("listener error")
 	}
 }

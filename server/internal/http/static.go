@@ -1,6 +1,6 @@
 // +build webui
 
-package router
+package http
 
 import (
 	"github.com/markbates/pkger"
@@ -8,5 +8,5 @@ import (
 )
 
 func init() {
-	static = http.FileServer(pkger.Dir("/../ui/web/dist"))
+	Static = http.FileServer(pkger.Dir("/ui/web/dist/"))
 }

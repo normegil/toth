@@ -22,10 +22,6 @@ func NewAuth(errHandler httperror.HTTPErrorHandler, sessionManager *scs.SessionM
 	}
 }
 
-func (a Auth) Path() string {
-	return "/auth"
-}
-
 func (a Auth) Handler() http.Handler {
 	r := chi.NewRouter()
 	r.Get("/log-in", NeutralResponse{}.Handle)
