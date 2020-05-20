@@ -179,6 +179,8 @@ github.com/normegil/interval v0.0.0-20181220165130-6c2976dd2323 h1:DZ8xMvvMQ0aq7
 github.com/normegil/interval v0.0.0-20181220165130-6c2976dd2323/go.mod h1:DDx4OosYtP41pLSmm3WZS2+1rRNPhKPT/v05/6jFvZY=
 github.com/normegil/postgres v0.0.0-20200310214905-1795c39f26e2 h1:SIsmh/KBku6ctbox2rjYZoKGF8FtQnyOBME8U9ipM/8=
 github.com/normegil/postgres v0.0.0-20200310214905-1795c39f26e2/go.mod h1:gYiX88w4Rpz53mvBnSMF6H8kEGiROMEjcznS4BbN364=
+github.com/normegil/postgres v0.0.0-20200520080336-f30391fba1ef h1:AuXk+aQChcAoz9X2mcYmKHYTPpYeDoeKiaGHXf+SExQ=
+github.com/normegil/postgres v0.0.0-20200520080336-f30391fba1ef/go.mod h1:gYiX88w4Rpz53mvBnSMF6H8kEGiROMEjcznS4BbN364=
 github.com/normegil/toth v0.0.0-20200314192027-c3f368924c0e h1:gc4ZVBAyOocJOVW3c5WzpHFKXIom0mpzWSGr4aqt+uk=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
@@ -390,6 +392,8 @@ gopkg.in/yaml.v2 v2.2.4 h1:/eiJrUcujPVeJ3xlSWaiNi3uSVmDGBK1pDHUHAnao1I=
 gopkg.in/yaml.v2 v2.2.4/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.7 h1:VUgggvou5XRW9mHwD/yXxIYSMtY0zoKQf/v226p2nyo=
 gopkg.in/yaml.v2 v2.2.7/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
+gopkg.in/yaml.v3 v3.0.0-20200506231410-2ff61e1afc86 h1:OfFoIUYv/me30yv7XlMy4F9RJw8DEm8WQ6QG1Ph4bH0=
+gopkg.in/yaml.v3 v3.0.0-20200506231410-2ff61e1afc86/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 honnef.co/go/tools v0.0.0-20190102054323-c2f93a96b099/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.0-20190106161140-3f1c8253044a/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=
 honnef.co/go/tools v0.0.0-20190418001031-e561f6794a2a/go.mod h1:rf3lG4BRIbNafJWhAfAdb/ePZxsR/4RtNHQocxwk9r4=

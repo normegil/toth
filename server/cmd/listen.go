@@ -7,6 +7,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/normegil/godatabaseversioner"
 	"github.com/normegil/postgres"
+	"github.com/normegil/toth/server/internal/commands"
 	internalhttp "github.com/normegil/toth/server/internal/http"
 	"github.com/normegil/toth/server/internal/http/api"
 	httperror "github.com/normegil/toth/server/internal/http/error"
@@ -41,29 +42,8 @@ func listen() (*cobra.Command, error) {
 		return nil, fmt.Errorf("binding parameter %s: %w", "log.user-error", err)
 	}
 
-	listenCmd.Flags().String("postgres-address", "localhost", "Postgres server connection URL")
-	if err := viper.BindPFlag("postgres.address", listenCmd.Flags().Lookup("postgres-address")); err != nil {
-		return nil, fmt.Errorf("binding parameter %s: %w", "postgres.address", err)
-	}
-
-	listenCmd.Flags().Int("postgres-port", 5432, "Postgres server connection URL")
-	if err := viper.BindPFlag("postgres.port", listenCmd.Flags().Lookup("postgres-port")); err != nil {
-		return nil, fmt.Errorf("binding parameter %s: %w", "postgres.port", err)
-	}
-
-	listenCmd.Flags().String("postgres-database", ApplicationName, "Postgres server connection URL")
-	if err := viper.BindPFlag("postgres.database", listenCmd.Flags().Lookup("postgres-database")); err != nil {
-		return nil, fmt.Errorf("binding parameter %s: %w", "postgres.database", err)
-	}
-
-	listenCmd.Flags().String("postgres-user", "postgres", "Postgres server connection User")
-	if err := viper.BindPFlag("postgres.user", listenCmd.Flags().Lookup("postgres-user")); err != nil {
-		return nil, fmt.Errorf("binding parameter %s: %w", "postgres.user", err)
-	}
-
-	listenCmd.Flags().String("postgres-password", "postgres", "Postgres server connection Password")
-	if err := viper.BindPFlag("postgres.password", listenCmd.Flags().Lookup("postgres-password")); err != nil {
-		return nil, fmt.Errorf("binding parameter %s: %w", "postgres.password", err)
+	if err := commands.RegisterPostgresOptions(listenCmd); nil != err {
+		return nil, err
 	}
 
 	return listenCmd, nil
@@ -81,16 +61,7 @@ func listenRun(_ *cobra.Command, _ []string) {
 
 	sessionManager := scs.New()
 
-	db, err := postgres.New(postgres.Configuration{
-		Address:  viper.GetString("postgres.address"),
-		Port:     viper.GetInt("postgres.port"),
-		User:     viper.GetString("postgres.user"),
-		Password: viper.GetString("postgres.password"),
-		Database: viper.GetString("postgres.database"),
-		RequiredExtentions: []string{
-			"pgcrypto",
-		},
-	})
+	db, err := postgres.New(commands.LoadPostgresConfiguration())
 	if err != nil {
 		log.Fatal().Err(err).Msg("init postgres connection")
 	}
