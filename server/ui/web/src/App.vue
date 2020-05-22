@@ -20,6 +20,9 @@ import AuthenticationScreen from "./layout/login/AuthenticationScreen.vue";
   components: { TitleBar, Navigation, AuthenticationScreen }
 })
 export default class App extends Vue {
+  created(): void {
+    this.$store.dispatch("auth/loadAuthentication");
+  }
 }
 </script>
 
