@@ -12,9 +12,9 @@ import (
 )
 
 type userRTO struct {
-	ID   uuid.UUID
-	Name string
-	Mail string
+	ID   uuid.UUID `json:"id"`
+	Name string    `json:"name"`
+	Mail string    `json:"mail"`
 }
 
 func fromUser(u internal.User) *userRTO {
@@ -44,9 +44,9 @@ func (a Users) currentUser(w http.ResponseWriter, r *http.Request) {
 		a.ErrHandler.Handle(w, fmt.Errorf("marshalling %+v: %w", rto, err))
 		return
 	}
+	w.WriteHeader(http.StatusOK)
 	if _, err := w.Write(bytes); nil != err {
 		a.ErrHandler.Handle(w, err)
 		return
 	}
-	w.WriteHeader(http.StatusOK)
 }
