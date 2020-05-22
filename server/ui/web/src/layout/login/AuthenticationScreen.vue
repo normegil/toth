@@ -1,5 +1,5 @@
 <template>
-<div class="authenticationscreen__root">
+<div class="authenticationscreen__root" v-if="!authenticated">
     <div class="authenticationscreen__dialog">
         <Logo class="authenticationscreen__logo" />
         <Login />
@@ -17,6 +17,12 @@ import Logo from "../../assets/images/logo.svg";
     components: {Login, Logo}
 })
 export default class AuthenticationScreen extends Vue {
+    get authenticated():boolean {
+        let user = this.$store.state.auth.authentifiedUser;
+        let b = undefined !== user && user.name !== "anonymous";
+        console.log("Evaluated: " + b)
+        return b
+    }
 }
 </script>
 
@@ -28,6 +34,8 @@ export default class AuthenticationScreen extends Vue {
         left: 0;
         min-width: 100vw;
         min-height: 100vh;
+
+        z-index: 1;
 
         background-color: $color-primary-lighter;
     }

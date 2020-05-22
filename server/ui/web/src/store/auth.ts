@@ -8,7 +8,6 @@ import ResourceRights from "../model/ResourceRights";
 import Role from "../model/Role";
 
 interface AuthState {
-  showLoginModal: boolean;
   authentifiedUser: User | undefined;
   rights: ResourceRights[] | undefined;
 }
@@ -21,17 +20,10 @@ interface LoginInformations {
 export const AUTH: Module<AuthState, RootState> = {
   namespaced: true,
   state: {
-    showLoginModal: false,
     authentifiedUser: undefined,
     rights: undefined
   },
   getters: {
-    isAuthenticated: (state): boolean => {
-      return !(
-        undefined === state.authentifiedUser ||
-        state.authentifiedUser.name === "anonymous"
-      );
-    },
     hasAccess: state => {
       return (resource: string, action: string): boolean => {
         if (state.rights === undefined) {
@@ -52,9 +44,6 @@ export const AUTH: Module<AuthState, RootState> = {
     }
   },
   mutations: {
-    setShowLoginModal: (state, show: boolean): void => {
-      state.showLoginModal = show;
-    },
     setRights: (state, rights: ResourceRights[]): void => {
       state.rights = rights;
     },
@@ -73,7 +62,6 @@ export const AUTH: Module<AuthState, RootState> = {
     loadAuthentication: async (ctx): Promise<void> => {
       const response: AxiosResponse<User> = await API.get("/users/current");
       ctx.commit("setAuthentified", response.data);
-      return ctx.dispatch("loadRights");
     },
     loadRights: async (ctx): Promise<void> => {
       const response: AxiosResponse<ResourceRights> = await API.get(
@@ -82,13 +70,10 @@ export const AUTH: Module<AuthState, RootState> = {
       ctx.commit("setRights", response.data);
     },
     signIn: async (ctx, login: LoginInformations): Promise<void> => {
-      const response: AxiosResponse<User> = await Server.get("/auth/sign-in", {
+      const response: AxiosResponse<User> = await API.get("/auth/log-in", {
         auth: login
       });
-      console.log("Sign in as: " + response.data.name);
-      ctx.commit("setAuthentified", response.data);
-      ctx.commit("setShowLoginModal", false);
-      return ctx.dispatch("loadRights");
+      return ctx.dispatch("loadAuthentication");
     },
     signOut: async (ctx): Promise<void> => {
       await Server.get("/auth/sign-out", {
@@ -98,15 +83,6 @@ export const AUTH: Module<AuthState, RootState> = {
       });
       ctx.commit("setAuthentified", undefined);
       return ctx.dispatch("loadRights");
-    },
-    requireLogin: async (ctx): Promise<boolean> => {
-      ctx.commit("setShowLoginModal", true);
-      while (!ctx.getters.isAuthenticated && ctx.state.showLoginModal) {
-        await sleep(200);
-      }
-      return new Promise((resolve): void => {
-        resolve(ctx.getters.isAuthenticated);
-      });
     }
   }
 };

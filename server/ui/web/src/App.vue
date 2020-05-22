@@ -5,7 +5,7 @@
       <TitleBar class="app__title-bar" />
       <div class="app__content">Content</div>
     </div>
-    <AuthenticationScreen :show="!isAuthenticated" />
+    <AuthenticationScreen />
   </div>
 </template>
 
@@ -20,9 +20,6 @@ import AuthenticationScreen from "./layout/login/AuthenticationScreen.vue";
   components: { TitleBar, Navigation, AuthenticationScreen }
 })
 export default class App extends Vue {
-  isAuthenticated():boolean {
-      return this.$store.getters["auth/isAuthenticated"]
-  }
 }
 </script>
 
