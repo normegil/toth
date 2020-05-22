@@ -5,6 +5,7 @@
       <TitleBar class="app__title-bar" />
       <div class="app__content">Content</div>
     </div>
+    <AuthenticationScreen :show="!isAuthenticated" />
   </div>
 </template>
 
@@ -13,11 +14,16 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import Navigation from "./layout/Navigation.vue";
 import TitleBar from "./layout/TitleBar.vue";
+import AuthenticationScreen from "./layout/login/AuthenticationScreen.vue";
 
 @Component({
-  components: { TitleBar, Navigation }
+  components: { TitleBar, Navigation, AuthenticationScreen }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  isAuthenticated():boolean {
+      return this.$store.getters["auth/isAuthenticated"]
+  }
+}
 </script>
 
 <style lang="scss">
@@ -40,7 +46,7 @@ export default class App extends Vue {}
   }
 
   &__content {
-    background-color: $color-grey-8;
+    background-color: $color-grey-7;
     height: 100%;
   }
 }

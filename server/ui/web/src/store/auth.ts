@@ -22,11 +22,7 @@ export const AUTH: Module<AuthState, RootState> = {
   namespaced: true,
   state: {
     showLoginModal: false,
-    authentifiedUser: new User(
-      "0",
-      "Marie-Odile Barvaux",
-      new Role("0", "teacher")
-    ),
+    authentifiedUser: undefined,
     rights: undefined
   },
   getters: {
