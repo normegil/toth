@@ -13,7 +13,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import Navigation from "./layout/Navigation.vue";
-import TitleBar from "./layout/TitleBar.vue";
+import TitleBar from "./layout/title/TitleBar.vue";
 import AuthenticationScreen from "./layout/login/AuthenticationScreen.vue";
 
 @Component({

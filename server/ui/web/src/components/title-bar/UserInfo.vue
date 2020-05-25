@@ -1,8 +1,7 @@
 <template>
-  <a class="user-info-button">
+  <div class="user-info-button">
     {{ user.name }}
-    <CaretLeft class="user-info-button__icon" />
-  </a>
+  </div>
 </template>
 
 <script lang="ts">
@@ -29,20 +28,5 @@ export default class UserInfo extends Vue {
   padding: 1.5rem;
   transition: all 0.2s;
   cursor: pointer;
-
-  &:hover {
-    color: $color-complementary-light;
-  }
-
-  &:active {
-    color: $color-complementary;
-  }
-
-  &__icon {
-    margin-left: 0.5rem;
-    position: relative;
-    top: 0.3rem;
-    height: 1.5rem;
-  }
 }
 </style>
