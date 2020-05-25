@@ -2,19 +2,19 @@
   <header class="title-bar">
     <Search class="title-bar__search" />
     <Notification />
-    <UserInfo class="title-bar__user-info" />
+    <UserInfo class="title-bar__user-info"/>
   </header>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import UserInfo from "../components/title-bar/UserInfo.vue";
-import Search from "../components/title-bar/Search.vue";
-import Notification from "../components/navigation/Notification.vue";
+  import Vue from "vue";
+  import Component from "vue-class-component";
+  import Search from "../../components/title-bar/Search.vue";
+  import Notification from "../../components/navigation/Notification.vue";
+  import UserInfo from "../../components/title-bar/UserInfo.vue";
 
 @Component({
-  components: { Notification, UserInfo, Search }
+    components: {UserInfo, Notification, Search }
 })
 export default class TitleBar extends Vue {}
 </script>

@@ -76,13 +76,12 @@ export const AUTH: Module<AuthState, RootState> = {
       return ctx.dispatch("loadAuthentication");
     },
     signOut: async (ctx): Promise<void> => {
-      await Server.get("/auth/sign-out", {
+      await API.get("/auth/log-out", {
         headers: {
           "X-Authentication-Action": "sign-out"
         }
       });
       ctx.commit("setAuthentified", undefined);
-      return ctx.dispatch("loadRights");
     }
   }
 };
