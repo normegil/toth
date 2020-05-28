@@ -25,19 +25,19 @@
       :type="fieldType"
     />
     <input
-      v-if="password"
+      v-if="password && enableShowPassword"
       type="checkbox"
       v-model="showPassword"
-      id="password-checkbox"
       class="field__password-checkbox"
+      :id="this._uid + 'password-checkbox'"
     /><label
-      v-if="password"
-      for="password-checkbox"
+      v-if="password && enableShowPassword"
+      :for="this._uid + 'password-checkbox'"
       class="field__password-checkbox-label"
       :class="{
         'right-rounded': !buttonEnabled,
       }"
-    ><span v-if="showPassword"><EyeSlash class="field__password-checkbox-icon"/></span><span v-if="!showPassword" ><Eye class="field__password-checkbox-icon field__password-checkbox-icon--eye " /></span></label>
+    ><span v-if="enableShowPassword && showPassword"><EyeSlash class="field__password-checkbox-icon"/></span><span v-if="!showPassword" ><Eye class="field__password-checkbox-icon field__password-checkbox-icon--eye " /></span></label>
     <a
       v-if="buttonEnabled"
       class="field__button"
@@ -79,6 +79,9 @@ export default class InputField extends Vue {
 
   @Prop({ default: false, required: false })
   password!: boolean;
+
+  @Prop({ default: true, required: false })
+  enableShowPassword!: boolean;
 
   showPassword = false;
 

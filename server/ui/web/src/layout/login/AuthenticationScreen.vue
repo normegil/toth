@@ -20,7 +20,6 @@ export default class AuthenticationScreen extends Vue {
     get authenticated():boolean {
         let user = this.$store.state.auth.authentifiedUser;
         let b = undefined !== user && user.name !== "anonymous";
-        console.log("Evaluated: " + b)
         return b
     }
 }

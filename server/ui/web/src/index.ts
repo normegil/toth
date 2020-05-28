@@ -13,10 +13,16 @@ Vue.use(VueRouter);
 
 const i18n = new VueI18n(TRANSLATOR_OPTIONS);
 
-new Vue({
-  i18n: i18n,
-  router: ROUTER,
-  store: STORE,
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  render: h => h(App)
-}).$mount("#app");
+STORE.dispatch("auth/loadAuthentication")
+    .then(() => {
+      new Vue({
+        i18n: i18n,
+        router: ROUTER,
+        store: STORE,
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        render: h => h(App)
+      }).$mount("#app");
+    })
+    .catch((err: Error) => {
+      console.error(err)
+    })

@@ -110,3 +110,17 @@ func (d UserDAO) Insert(user internal.User) error {
 func (d UserDAO) IsNotFoundError(err error) bool {
 	return IsNotFoundError(err)
 }
+
+func (d UserDAO) UpdateProfile(user internal.User) error {
+	if _, err := d.Querier.Exec(`UPDATE toth_user SET name=$2, mail=$3 WHERE id=$1;`, user.ID, user.Name, user.Mail.String()); err != nil {
+		return fmt.Errorf("update profile %s: %w", user.ID.String(), err)
+	}
+	return nil
+}
+
+func (d UserDAO) UpdatePassword(userID uuid.UUID, newPasswordHash []byte, newAlgorithmID uuid.UUID) error {
+	if _, err := d.Querier.Exec(`UPDATE toth_user SET hash=$2::bytea, algorithmID=$3 WHERE id=$1;`, userID, newPasswordHash, newAlgorithmID.String()); err != nil {
+		return fmt.Errorf("update password %s: %w", userID.String(), err)
+	}
+	return nil
+}

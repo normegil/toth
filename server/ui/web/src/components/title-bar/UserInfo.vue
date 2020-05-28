@@ -1,6 +1,6 @@
 <template>
   <div class="user-info-button">
-    {{ user.name }}
+    {{ username }}
   </div>
 </template>
 
@@ -14,8 +14,16 @@ import CaretLeft from "../../assets/images/icons/caret-left-solid.svg";
   components: { CaretLeft }
 })
 export default class UserInfo extends Vue {
-  get user(): User {
+  get user(): User | undefined {
     return this.$store.state.auth.authentifiedUser;
+  }
+
+  get username(): string {
+    let user = this.user;
+    if (user === undefined) {
+      return ""
+    }
+    return user.name
   }
 }
 </script>
