@@ -4,13 +4,13 @@ hide empty methods
 class Person {
     id: UUID
     name: string
-    surname: string
 }
 
 class User {
     mail: Mail
     passwordHash: []byte
     hashAlgorithm: string
+    disabled: bool
     checkPassword(password: string): bool
 }
 
@@ -23,16 +23,32 @@ class Teacher {
 class Student {
     results: []Result
     interrogations(): []Interrogation
+    classes: []ClassStudent
     courses(): []Course
     average(course: Course): int
 }
 
 class Course {
     id: UUID
-    name: string
+    name: String
     parent: Course
     average(): int
     interrogations(): []Interrogation
+}
+
+class CourseResponsable {
+    id: UUID
+    responsible: Teacher
+    course: Course
+    start: Date
+    end: Date
+}
+
+class CourseStudent {
+    student: Student
+    course: Course
+    start: Date
+    end: Date
 }
 
 class Interrogation {
@@ -61,15 +77,56 @@ class Result {
     result: int
 }
 
+class Class {
+    id: UUID
+    name: String
+    responsable: Teacher
+    students: []ClassStudent
+}
+
+class ClassStudent {
+    class: Class
+    student: Student
+    level: int
+    start: Date
+    end: Date
+}
+
+class School {
+    id: UUID
+    name: String
+    director: User
+    classes: []Class
+}
+
+class Organization {
+    id: UUID
+    name: String
+    manager: User
+    schools: []School
+}
+
 Student *-- Result
 Interrogation *-- InterrogationDataPerCourse
 Course *-- Course
 Course *-- InterrogationDataPerCourse
 InterrogationDataPerCourse *-- Result
+Course *-- CourseStudent
+Student *-- CourseStudent
+Class *-- ClassStudent
+Student *-- ClassStudent
+Teacher *-- Class
+Course *-- CourseResponsable
+Teacher *-- CourseResponsable
+
+School *-- Class
+Organization *-- School
+School -- User
+Organization -- User
 
 Person <|-- User
 Person <|-- Student
 User <|-- Teacher
-Teacher o-- Interrogation
+User <|-- Director
 
 @enduml
