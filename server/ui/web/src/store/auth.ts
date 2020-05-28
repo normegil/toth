@@ -2,10 +2,8 @@ import { Module } from "vuex";
 import { RootState } from "./model";
 import { API, Server } from "./http";
 import { AxiosResponse } from "axios";
-import sleep from "../tools/sleep";
 import User from "../model/User";
 import ResourceRights from "../model/ResourceRights";
-import Role from "../model/Role";
 
 interface AuthState {
   authentifiedUser: User | undefined;
@@ -15,6 +13,18 @@ interface AuthState {
 interface LoginInformations {
   username: string;
   password: string;
+}
+
+interface PasswordChange {
+  id: string;
+  currentPassword: string;
+  newPassword: string;
+}
+
+interface ProfileChange {
+  id: string;
+  name: string;
+  mail: string;
 }
 
 export const AUTH: Module<AuthState, RootState> = {
@@ -68,6 +78,29 @@ export const AUTH: Module<AuthState, RootState> = {
         "/rights/current"
       );
       ctx.commit("setRights", response.data);
+    },
+    updateProfile: async (ctx, info: ProfileChange): Promise<void> => {
+      let response = await API.put("/users", {
+        "id": info.id,
+        "name":info.name,
+        "mail":info.mail,
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      return ctx.dispatch("loadAuthentication");
+    },
+    updatePassword: async (ctx, info: PasswordChange): Promise<void> => {
+      let response = await API.put("/users/" + info.id + "/password", {
+        "current_password":info.currentPassword,
+        "new_password":info.newPassword,
+      }, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      return ctx.dispatch("loadAuthentication");
     },
     signIn: async (ctx, login: LoginInformations): Promise<void> => {
       const response: AxiosResponse<User> = await API.get("/auth/log-in", {

@@ -23,6 +23,10 @@ func (h HashAlgorithms) FindByID(id uuid.UUID) HashAlgorithm {
 	return nil
 }
 
+func DefaultHashAlgorithm() HashAlgorithm {
+	return HashAlgorithmBcrypt14()
+}
+
 func AllHashAlgorithms() HashAlgorithms {
 	return []HashAlgorithm{
 		HashAlgorithmBcrypt14(),

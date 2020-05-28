@@ -29,11 +29,12 @@ export default class Navigation extends Vue {
   }
   get userLinks(): {title: string, action: () => void}[] {
     let store = this.$store
+    let router = this.$router
     return [
       {
         title: "Settings",
         action: function () {
-          console.log("Settings")
+          router.push("/settings")
         }
       },
       {

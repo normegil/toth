@@ -3,7 +3,9 @@
     <Navigation class="app__navigation" />
     <div class="app__page">
       <TitleBar class="app__title-bar" />
-      <div class="app__content">Content</div>
+      <div class="app__content">
+        <router-view />
+      </div>
     </div>
     <AuthenticationScreen />
   </div>
@@ -15,14 +17,12 @@ import Component from "vue-class-component";
 import Navigation from "./layout/Navigation.vue";
 import TitleBar from "./layout/title/TitleBar.vue";
 import AuthenticationScreen from "./layout/login/AuthenticationScreen.vue";
+import Frame from "./components/Frame.vue";
 
 @Component({
-  components: { TitleBar, Navigation, AuthenticationScreen }
+  components: {Frame, TitleBar, Navigation, AuthenticationScreen }
 })
 export default class App extends Vue {
-  created(): void {
-    this.$store.dispatch("auth/loadAuthentication");
-  }
 }
 </script>
 
@@ -48,6 +48,7 @@ export default class App extends Vue {
   &__content {
     background-color: $color-grey-7;
     height: 100%;
+    padding: 2rem;
   }
 }
 </style>

@@ -70,9 +70,10 @@ func listenRun(_ *cobra.Command, _ []string) {
 		log.Fatal().Err(err).Msg("synchronize database schema")
 	}
 
+	userDAO := internalpostgres.UserDAO{Querier: db}
 	authenticationMiddleware := internalhttp.AuthenticationMiddleware{
 		ErrHandler:     errHandler,
-		UserDAO:        internalpostgres.UserDAO{Querier: db},
+		UserDAO:        userDAO,
 		SessionManager: sessionManager,
 	}
 
@@ -81,7 +82,7 @@ func listenRun(_ *cobra.Command, _ []string) {
 	r.Mount("/", internalhttp.Static)
 	r.Route("/api", func(r chi.Router) {
 		r.Mount("/auth", api.NewAuth(errHandler, sessionManager).Handler())
-		r.Mount("/users", api.Users{ErrHandler: errHandler}.Handler())
+		r.Mount("/users", api.Users{ErrHandler: errHandler, UserDAO: userDAO}.Handler())
 	})
 
 	if err := internalhttp.Listen(addr, r); nil != err {

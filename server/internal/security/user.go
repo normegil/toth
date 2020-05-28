@@ -7,7 +7,7 @@ import (
 )
 
 func NewUser(name string, mail internal.Mail, password string) (*internal.User, error) {
-	hashAlgorithm := HashAlgorithmBcrypt14()
+	hashAlgorithm := DefaultHashAlgorithm()
 	hash, err := hashAlgorithm.HashAndSalt(password)
 	if err != nil {
 		return nil, fmt.Errorf("hashing with '%s': %w", hashAlgorithm.ID().String(), err)
