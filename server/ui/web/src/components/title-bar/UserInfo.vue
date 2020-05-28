@@ -1,6 +1,6 @@
 <template>
   <div class="user-info-button">
-    {{ username }}
+    {{ user.name }}
   </div>
 </template>
 
