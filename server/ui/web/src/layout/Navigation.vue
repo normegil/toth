@@ -25,20 +25,28 @@ import MenuItem from "../components/navigation/MenuItem.vue";
 })
 export default class Navigation extends Vue {
   get links(): {title: string, action: () => void}[] {
-    return [];
+    let router = this.$router
+    return [
+      {
+        title: "Classes",
+        action: function () {
+          router.push("/classes")
+        }
+      }
+    ];
   }
   get userLinks(): {title: string, action: () => void}[] {
     let store = this.$store
     let router = this.$router
     return [
       {
-        title: "Settings",
+        title: "Réglages",
         action: function () {
           router.push("/settings")
         }
       },
       {
-        title: "Log out",
+        title: "Déconnexion",
         action: function () {
           store.dispatch("auth/signOut")
                   .catch((err: Error) => {

@@ -1,7 +1,7 @@
 <template>
     <div>
         <Frame>
-            <h1>Settings</h1>
+            <h1>Réglages</h1>
         </Frame>
         <div class="settings__container-profile">
             <ProfileSettings class="settings__subcontainer-profile" />
